@@ -1,0 +1,6 @@
+---
+# Variables listed here are applicable to all host groups
+wp_version: 5.7.2
+wp_sha256sum: eb8d05208159469d0be3cb339f7b6a150a39f503faf679c255028433f5131219
+mysql_port: 3306
+httpd_port: 80

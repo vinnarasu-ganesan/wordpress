@@ -1,0 +1,36 @@
+---
+# This playbook will httpd
+  
+- name: Install EPEL repo.
+  yum:
+    name: http://rpms.remirepo.net/enterprise/remi-release-7.rpm
+    state: present
+    
+- name: Install Yum utils
+  yum: name={{ item }} state=present
+  with_items:
+   - epel-release
+   - yum-utils
+   
+- name: Enable EPEL repo
+  command: yum-config-manager --enable remi-php73
+  become: yes
+  
+- name: Install httpd and php
+  yum: name={{ item }} state=present
+  with_items:
+   - httpd
+   - php
+   - php-mysql
+
+- name: Start firewalld
+  service: name=firewalld state=started enabled=yes
+
+- name: insert firewalld rule for httpd
+  firewalld: port={{ httpd_port }}/tcp permanent=true state=enabled immediate=yes
+
+- name: http service state
+  service: name=httpd state=started enabled=yes
+
+- name: Configure SELinux to allow httpd to connect to remote database
+  seboolean: name=httpd_can_network_connect_db state=true persistent=yes
