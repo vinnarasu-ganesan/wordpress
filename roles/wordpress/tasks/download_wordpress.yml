@@ -13,3 +13,7 @@
     
 - name: Creates the wp-config.php file
   template: src=templates/wp-config.php.j2 dest=/var/www/html/wp-config.php
+  
+- name: http service state
+  service: name=httpd state=started enabled=yes
+  
